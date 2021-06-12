@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Nototaku" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="nginx的一些总结。">
+<meta name="keywords" content="nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx配置总结(一)">
+<meta property="og:url" content="http://yoursite.com/2020/01/04/nginx配置总结/index.html">
+<meta property="og:site_name" content="Nototaku">
+<meta property="og:description" content="nginx的一些总结。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-12T14:02:58.147Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="nginx配置总结(一)">
+<meta name="twitter:description" content="nginx的一些总结。">
+  <link rel="canonical" href="http://yoursite.com/2020/01/04/nginx配置总结/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>nginx配置总结(一) | Nototaku</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Nototaku</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/04/nginx配置总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Narlim">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/Laughing_man_logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nototaku">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">nginx配置总结(一)
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-04 21:28:29" itemprop="dateCreated datePublished" datetime="2020-01-04T21:28:29+08:00">2020-01-04</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-12 22:02:58" itemprop="dateModified" datetime="2021-06-12T22:02:58+08:00">2021-06-12</time>
+              </span>
+            
+          
+
+          
+            <span id="/2020/01/04/nginx配置总结/" class="post-meta-item leancloud_visitors" data-flag-title="nginx配置总结(一)" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/01/04/nginx配置总结/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/01/04/nginx配置总结/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>nginx的一些总结。</p>
+<a id="more"></a>
+
+<h3 id="location匹配规则"><a href="#location匹配规则" class="headerlink" title="location匹配规则"></a>location匹配规则</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">events</span> &#123;&#125;</span><br><span class="line">  </span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">  <span class="attribute">include</span> mime.types;</span><br><span class="line"></span><br><span class="line">  <span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> <span class="number">127.0.0.1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">root</span> /sites/demo;</span><br><span class="line"></span><br><span class="line"><span class="comment">## 1</span></span><br><span class="line">    <span class="comment"># Prefix match</span></span><br><span class="line"><span class="comment">#    location /greet &#123;</span></span><br><span class="line"><span class="comment">#      return 200 'Hello from NGINX "/greet" location.';</span></span><br><span class="line"><span class="comment">#    &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 2</span></span><br><span class="line">    <span class="comment"># Exact match</span></span><br><span class="line"><span class="comment">#    location = /greet &#123;</span></span><br><span class="line"><span class="comment">#      return 200 'Hello from NGINX "/greet" location. - EXACT MATCH';</span></span><br><span class="line"><span class="comment">#    &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 3</span></span><br><span class="line">    <span class="comment"># REGEX match - case sensitive</span></span><br><span class="line"><span class="comment">#    location ~ /greet[0-9] &#123;</span></span><br><span class="line"><span class="comment">#      return 200 'Hello from NGINX "/greet" location. - REGEX MATCH';</span></span><br><span class="line"><span class="comment">#    &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 4</span></span><br><span class="line">    <span class="comment"># REGEX match - case insensitive</span></span><br><span class="line">    <span class="attribute">location</span> <span class="regexp">~* /greet[0-9]</span> &#123;</span><br><span class="line">      <span class="attribute">return</span> <span class="number">200</span> <span class="string">'Hello from NGINX "/greet" location. - REGEX MATCH INSENSITIVE'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">## 5</span></span><br><span class="line">    <span class="comment"># Preferential Prefix match</span></span><br><span class="line">    <span class="attribute">location</span><span class="regexp"> ^~</span> /Greet2 &#123;</span><br><span class="line">      <span class="attribute">return</span> <span class="number">200</span> <span class="string">'Hello from NGINX "/greet" location.'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">### 一、如果把1的路径改为‘/Greet2’，同时把4打开，发现匹配的是4，即使4的配置在后面。</span></span><br><span class="line"><span class="comment">### 二、如果把4和5打开，会发现先匹配的是5。</span></span><br><span class="line"><span class="comment">### 总结匹配的先后顺序：</span></span><br><span class="line"><span class="comment">### 1. Exact Match               =  uri</span></span><br><span class="line"><span class="comment">### 2. Preferential Prefix Match ^~ uri</span></span><br><span class="line"><span class="comment">### 3. REGEX Match               ~* uri</span></span><br><span class="line"><span class="comment">### 4. Prefix Match                 uri</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="rewrite-and-redirect"><a href="#rewrite-and-redirect" class="headerlink" title="rewrite and redirect"></a>rewrite and redirect</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">events</span> &#123;&#125;</span><br><span class="line">  </span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">  <span class="attribute">include</span> mime.types;</span><br><span class="line"></span><br><span class="line">  <span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> <span class="number">127.0.0.1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">root</span> /sites/demo;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1.</span></span><br><span class="line">    <span class="attribute">location</span> /logo &#123;</span><br><span class="line">      <span class="attribute">return</span> <span class="number">307</span> /thumb.png;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">### 把/logo的uri重定向到/thumb.png</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.</span></span><br><span class="line"><span class="comment">#    rewrite ^/user/\w+ /greet;</span></span><br><span class="line"><span class="comment">#    location /greet &#123;</span></span><br><span class="line"><span class="comment">#      return 200 "Hello user";</span></span><br><span class="line"><span class="comment">#    &#125;</span></span><br><span class="line">    <span class="comment">### 访问http://127.0.0.1/user/john，实际访问http://127.0.0.1/greet，但是浏览器地址栏的地址不变。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3.</span></span><br><span class="line"><span class="comment">#    rewrite ^/user/(\w+) /greet/$1;</span></span><br><span class="line">    <span class="attribute">location</span> = /greet/john &#123;</span><br><span class="line">      <span class="attribute">return</span> <span class="number">200</span> <span class="string">"Hello john"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">### 访问http://127.0.0.1/user/john，实际访问http://127.0.0.1/greet/john，会传递后面的正则。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4.</span></span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^/user/(\w+)</span> /greet/<span class="variable">$1</span> <span class="literal">last</span>;</span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^/greet/john</span> /thumb.png;</span><br><span class="line"></span><br><span class="line">    <span class="comment">### 如果后面有一个last，那这个rewrite就是最后一个rewrite规则，虽然后面还有rewrite也不会生效。</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">events</span> &#123;&#125;</span><br><span class="line">  </span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">  <span class="attribute">include</span> mime.types;</span><br><span class="line"></span><br><span class="line">  <span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> <span class="number">127.0.0.1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">root</span> /sites/demo;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> /inspect &#123;</span><br><span class="line">      <span class="attribute">return</span> <span class="number">200</span> <span class="string">"<span class="variable">$host</span>\n<span class="variable">$uri</span>\n<span class="variable">$args</span>\n<span class="variable">$arg_name</span>"</span>;</span><br><span class="line">      <span class="comment">### 访问：http://127.0.0.1/inspect?name=marlin</span></span><br><span class="line">      <span class="comment">### 返回：</span></span><br><span class="line">      <span class="comment">### 127.0.0.1</span></span><br><span class="line">      <span class="comment">### /inspect</span></span><br><span class="line">      <span class="comment">### name=marlin</span></span><br><span class="line">      <span class="comment">### marlin</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Check static API key</span></span><br><span class="line"><span class="comment">#    if ( $arg_apikey != 1234 ) &#123;</span></span><br><span class="line"><span class="comment">#      return 401 "Incorrect API Key";</span></span><br><span class="line"><span class="comment">#    &#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Check if weekend</span></span><br><span class="line">    <span class="attribute">set</span> <span class="variable">$weekend</span> <span class="string">'No'</span>;</span><br><span class="line">    <span class="attribute">if</span> ( <span class="variable">$date_local</span> <span class="regexp">~ 'Saturday|Sunday'</span> ) &#123;</span><br><span class="line">      <span class="attribute">set</span> <span class="variable">$weekend</span> <span class="string">'Yes'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> /is_weekend &#123;</span><br><span class="line">      <span class="attribute">return</span> <span class="number">200</span> <span class="variable">$weekend</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="try-files"><a href="#try-files" class="headerlink" title="try_files"></a>try_files</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">vents</span> &#123;&#125;</span><br><span class="line">  </span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">  <span class="attribute">include</span> mime.types;</span><br><span class="line"></span><br><span class="line">  <span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> <span class="number">127.0.0.1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">root</span> /sites/demo;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. try_files</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">try_files</span> <span class="variable">$uri</span> /cat.png /greet /friendly_404;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> /friendly_404 &#123;</span><br><span class="line">      <span class="attribute">return</span> <span class="number">404</span> <span class="string">"Sorry"</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location /greet &#123;</span><br><span class="line">      <span class="attribute">return</span> <span class="number">200</span> <span class="string">"Hello user"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">### 访问‘http://127.0.0.1/nothing’</span></span><br><span class="line">    <span class="comment">### try_files 会查找第一个变量，发现在‘/sites/demo’目录下没有nothing这个文件或文件夹，继续下一个</span></span><br><span class="line">，也没有，以此类推，当所有参数都找不到的时候，最后会进行一个内部重定向。所以实际返回‘404 sorry’。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. named_location</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">try_files</span> <span class="variable">$uri</span> /cat.png /greet <span class="variable">@friendly_404</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> <span class="variable">@friendly_404</span> &#123;</span><br><span class="line">      <span class="attribute">return</span> <span class="number">404</span> <span class="string">"Sorry"</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">### 把‘/’换成‘@’，命名location可以确保最后一个参数一定会被重定向。</span></span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3种指令"><a href="#3种指令" class="headerlink" title="3种指令"></a>3种指令</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">events</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">######################</span></span><br><span class="line"><span class="comment"># (1) Array Directive</span></span><br><span class="line"><span class="comment">######################</span></span><br><span class="line"><span class="comment"># Can be specified multiple times without overriding a previous setting</span></span><br><span class="line"><span class="comment"># Gets inherited by all child contexts</span></span><br><span class="line"><span class="comment"># Child context can override inheritance by re-declaring directive</span></span><br><span class="line"><span class="attribute">access_log</span> /var/log/nginx/access.log;</span><br><span class="line"><span class="attribute">access_log</span> /var/log/nginx/custom.log.gz custom_format;</span><br><span class="line"></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Include statement - non directive</span></span><br><span class="line">  <span class="attribute">include</span> mime.types;</span><br><span class="line"></span><br><span class="line">  <span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> site1.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Inherits access_log from parent context (1)</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> site2.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#########################</span></span><br><span class="line">    <span class="comment"># (2) Standard Directive</span></span><br><span class="line">    <span class="comment">#########################</span></span><br><span class="line">    <span class="comment"># Can only be declared once. A second declaration overrides the first</span></span><br><span class="line">    <span class="comment"># Gets inherited by all child contexts</span></span><br><span class="line">    <span class="comment"># Child context can override inheritance by re-declaring directive</span></span><br><span class="line">    <span class="attribute">root</span> /sites/site2;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Completely overrides inheritance from (1)</span></span><br><span class="line">    <span class="attribute">access_log</span> <span class="literal">off</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> /images &#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment"># Uses root directive inherited from (2)</span></span><br><span class="line">      <span class="attribute">try_files</span> <span class="variable">$uri</span> /stock.png;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> /secret &#123;</span><br><span class="line">      <span class="comment">#######################</span></span><br><span class="line">      <span class="comment"># (3) Action Directive</span></span><br><span class="line">      <span class="comment">#######################</span></span><br><span class="line">      <span class="comment"># Invokes an action such as a rewrite or redirect</span></span><br><span class="line">      <span class="comment"># Inheritance does not apply as the request is either stopped (redirect/response) or re-evaluated (rewrite)</span></span><br><span class="line">      <span class="attribute">return</span> <span class="number">403</span> <span class="string">"You do not have permission to view this."</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="缓存和超时配置"><a href="#缓存和超时配置" class="headerlink" title="缓存和超时配置"></a>缓存和超时配置</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">user</span> www-data;</span><br><span class="line"></span><br><span class="line"><span class="attribute">worker_processes</span> auto;</span><br><span class="line"></span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">  <span class="attribute">worker_connections</span> <span class="number">1024</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="attribute">include</span> mime.types;</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Buffer size for POST submissions</span></span><br><span class="line">  <span class="attribute">client_body_buffer_size</span> <span class="number">10K</span>;</span><br><span class="line">  <span class="attribute">client_max_body_size</span> <span class="number">8m</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Buffer size for Headers</span></span><br><span class="line">  <span class="attribute">client_header_buffer_size</span> <span class="number">1k</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Max time to receive client headers/body</span></span><br><span class="line">  <span class="attribute">client_body_timeout</span> <span class="number">12</span>;</span><br><span class="line">  <span class="attribute">client_header_timeout</span> <span class="number">12</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Max time to keep a connection open for</span></span><br><span class="line">  <span class="attribute">keepalive_timeout</span> <span class="number">15</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Max time for the client accept/receive a response</span></span><br><span class="line">  <span class="attribute">send_timeout</span> <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Skip buffering for static files</span></span><br><span class="line">  <span class="attribute">sendfile</span> <span class="literal">on</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Optimise sendfile packets</span></span><br><span class="line">  <span class="attribute">tcp_nopush</span> <span class="literal">on</span>;</span><br><span class="line"></span><br><span class="line">  <span class="section">server</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> <span class="number">167.99.93.26</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">root</span> /sites/demo;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">index</span> index.php index.html;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">      <span class="attribute">try_files</span> <span class="variable">$uri</span> <span class="variable">$uri</span>/ =<span class="number">404</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> ~\.php$ &#123;</span><br><span class="line">      <span class="comment"># Pass php requests to the php-fpm service (fastcgi)</span></span><br><span class="line">      <span class="attribute">include</span> fastcgi.conf;</span><br><span class="line">      <span class="attribute">fastcgi_pass</span> unix:/run/php/php7.1-fpm.sock;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="headers-and-expires"><a href="#headers-and-expires" class="headerlink" title="headers and expires"></a>headers and expires</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">worker_processes</span> auto;</span><br><span class="line">  </span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">  <span class="attribute">worker_connections</span> <span class="number">1024</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="attribute">include</span> mime.types;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="section">server</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> localhost;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">root</span> /sites/demo;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">index</span> index.php index.html;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">      <span class="attribute">try_files</span> <span class="variable">$uri</span> <span class="variable">$uri</span>/ =<span class="number">404</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> ~\.php$ &#123;</span><br><span class="line">      <span class="comment"># Pass php requests to the php-fpm service (fastcgi)</span></span><br><span class="line">      <span class="attribute">include</span> fastcgi.conf;</span><br><span class="line">      <span class="attribute">fastcgi_pass</span> unix:/run/php/php7.1-fpm.sock;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> = /thumb.png &#123;</span><br><span class="line"></span><br><span class="line">      <span class="attribute">add_header</span> Cache-Control public;</span><br><span class="line">      <span class="attribute">add_header</span> Pragma public;</span><br><span class="line">      <span class="attribute">add_header</span> Vary Accept-Encoding;</span><br><span class="line">      <span class="attribute">expires</span> <span class="number">60m</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">### 60分钟的过期时间，文件缓存在客户端。</span></span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/nginx/" rel="tag"># nginx</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/12/16/一个简单的爬虫/" rel="next" title="一个简单的爬虫">
+                  <i class="fa fa-chevron-left"></i> 一个简单的爬虫
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2020/01/05/nginx配置总结-二/" rel="prev" title="nginx配置总结(二)">
+                  nginx配置总结(二) <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#location匹配规则"><span class="nav-number">1.</span> <span class="nav-text">location匹配规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rewrite-and-redirect"><span class="nav-number">2.</span> <span class="nav-text">rewrite and redirect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变量"><span class="nav-number">3.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#try-files"><span class="nav-number">4.</span> <span class="nav-text">try_files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3种指令"><span class="nav-number">5.</span> <span class="nav-text">3种指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存和超时配置"><span class="nav-number">6.</span> <span class="nav-text">缓存和超时配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#headers-and-expires"><span class="nav-number">7.</span> <span class="nav-text">headers and expires</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/Laughing_man_logo.png"
+      alt="Narlim">
+  <p class="site-author-name" itemprop="name">Narlim</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://ghost.qinan.co/" title="https://ghost.qinan.co/" rel="noopener" target="_blank">奇楠木语</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://liolok.github.io" title="https://liolok.github.io" rel="noopener" target="_blank">LIOLOG</a>
+        </li>
+      
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Narlim</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+  
+  <script>
+  function leancloudSelector(url) {
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = visitors.getAttribute('id').trim();
+      var title = visitors.getAttribute('data-flag-title').trim();
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+            
+              .catch(error => {
+                console.log('Failed to save visitor count', error);
+              })
+          } else {
+              Counter('post', '/classes/Counter', { title: title, url: url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.log('Failed to create', error);
+                });
+            
+          }
+        })
+        .catch(error => {
+          console.log('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return element.getAttribute('id').trim();
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.url;
+            var time = item.time;
+            leancloudSelector(url).innerText = time;
+          }
+          for (var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.log('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=UnGjdjzgCgtCbeup6X9wI9EP-MdYXbMMI')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'UnGjdjzgCgtCbeup6X9wI9EP-MdYXbMMI',
+            'X-LC-Key': 'Crb6d8ghnDlTxnwEHdXK8a8L',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        const localhost = /http:\/\/(localhost|127.0.0.1|0.0.0.0)/;
+        if (localhost.test(document.URL)) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://nototaku.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "http://yoursite.com/2020/01/04/nginx配置总结/";
+    this.page.identifier = "2020/01/04/nginx配置总结/";
+    this.page.title = 'nginx配置总结(一)';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://nototaku.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>
