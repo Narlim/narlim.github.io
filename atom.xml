@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2021-06-12T15:26:02.527Z</updated>
+  <updated>2021-06-13T14:57:29.259Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>magic trackpad2 支持gnome手势</title>
+    <link href="http://yoursite.com/2021/06/13/magic-trackpad2-%E6%94%AF%E6%8C%81gnome%E6%89%8B%E5%8A%BF/"/>
+    <id>http://yoursite.com/2021/06/13/magic-trackpad2-%E6%94%AF%E6%8C%81gnome%E6%89%8B%E5%8A%BF/</id>
+    <published>2021-06-13T09:39:57.000Z</published>
+    <updated>2021-06-13T14:57:29.259Z</updated>
+    
+    <content type="html"><![CDATA[<p>因为gnome40的触摸板手势是一大特色，而且在使用macbook的时候感觉苹果的触摸板确实挺好用的，于是就是入手了一个macgic trackpad2，本来想着是直接蓝牙连接的我的arch上面就可以用了，没想的并没有开箱即用，这里就记录一下配置的过程，防止以后忘记。</p><a id="more"></a><h3 id="连接到蓝牙"><a href="#连接到蓝牙" class="headerlink" title="连接到蓝牙"></a>连接到蓝牙</h3><p>很简单，打开trackpad上面的一个开关。默认就可以连接了，但是却有一个报错：<br><code>profiles/input/device.c:ioctl_is_connected() Can&#39;t open HIDP control socket</code><br>在网上查了半天，终于在<a href="https://wiki.archlinux.org/title/Bluetooth_mouse" target="_blank" rel="noopener">‘https://wiki.archlinux.org/title/Bluetooth_mouse’</a>里面找到一个关于hid的配置：  </p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Configuration file <span class="keyword">for</span> the input service</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> This section contains options <span class="built_in">which</span> are not specific to any</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> particular interface</span></span><br><span class="line">[General]</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Set idle timeout (<span class="keyword">in</span> minutes) before the connection will</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> be disconnect (defaults to 0 <span class="keyword">for</span> no timeout)</span></span><br><span class="line">IdleTimeout=0</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">Enable HID protocol handling <span class="keyword">in</span> userspace input profile</span></span><br><span class="line"><span class="meta">#</span><span class="bash">Defaults to <span class="literal">false</span>(hidp handled <span class="keyword">in</span> hidp kernel module)</span></span><br><span class="line">UserspaceHID=true</span><br></pre></td></tr></table></figure><p>把上面的配置写入或者创建文件：<code>/etc/bluetooth/input.conf</code>，重启bluetooth，终于连上了。按照这个配置的意思默认应该用的是内核模块的hidp,不知道为啥我这里用不了。</p><h3 id="支持gnome40的手势"><a href="#支持gnome40的手势" class="headerlink" title="支持gnome40的手势"></a>支持gnome40的手势</h3><p>连上以后发现只有鼠标的点击能用，gnome手势并没有支持，虽然自带的<code>libinput</code>已经支持手势，但是gnome可能还没有实现用这个软件来控制，查看wiki后得知需要安装<code>libinput-gestures</code>，这个包是在<code>aur</code>仓库的：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yay -S libinput-gestures</span><br><span class="line"></span><br><span class="line">libinput-gestures-setup service</span><br><span class="line">libinput-gestures-setup autostart start</span><br></pre></td></tr></table></figure><p>启动失败，查看失败的原因是权限，需要把当前用户加入到<code>input</code>这个用户组：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG input marlin</span><br></pre></td></tr></table></figure><p>重启电脑。因为这个软件要读取/dev下的设备文件，所以要重启。</p><p>启动以后查看：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status libinput-gestures --user</span><br></pre></td></tr></table></figure><p>其实前面的<code>libinput-gestures-setup service</code>就是创建了一个用户的systemd服务，<code>libinput-gestures-setup start</code>就等同于<code>systemctl start libinput-gestures --user</code>，我也不知道为啥他要自定义这些命令= =</p><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>到手这个trackpad本来以为蓝牙连接上就能直接用了，其实买之前我也看了一篇文章，他用的fedora说是开箱即用的，没想到arch下面还是搞了好久，而且arch下面用trackpad的人好像也不太多，查资料也查了好久，不过最后还是搞定了，虽然过程曲折了一点。</p><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul><li><p><a href="https://wiki.archlinux.org/title/Libinput_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)" target="_blank" rel="noopener">‘https://wiki.archlinux.org/title/Libinput_(%E7https://github.com/bulletmark/libinput-gestures/blob/master/README.md%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)’</a></p></li><li><p><a href="https://github.com/bulletmark/libinput-gestures/blob/master/README.md" target="_blank" rel="noopener">‘https://github.com/bulletmark/libinput-gestures/blob/master/README.md’</a></p></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;因为gnome40的触摸板手势是一大特色，而且在使用macbook的时候感觉苹果的触摸板确实挺好用的，于是就是入手了一个macgic trackpad2，本来想着是直接蓝牙连接的我的arch上面就可以用了，没想的并没有开箱即用，这里就记录一下配置的过程，防止以后忘记。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+      <category term="arch" scheme="http://yoursite.com/tags/arch/"/>
+    
+      <category term="trackpad" scheme="http://yoursite.com/tags/trackpad/"/>
+    
+  </entry>
   
   <entry>
     <title>视频硬件解码</title>
@@ -432,27 +457,6 @@
       <category term="python" scheme="http://yoursite.com/tags/python/"/>
     
       <category term="scrapy" scheme="http://yoursite.com/tags/scrapy/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>可迭代对象、迭代器和生成器</title>
-    <link href="http://yoursite.com/2019/12/13/%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1%E3%80%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%92%8C%E7%94%9F%E6%88%90%E5%99%A8/"/>
-    <id>http://yoursite.com/2019/12/13/%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1%E3%80%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%92%8C%E7%94%9F%E6%88%90%E5%99%A8/</id>
-    <published>2019-12-13T14:07:59.000Z</published>
-    <updated>2021-06-12T14:02:58.151Z</updated>
-    
-    <content type="html"><![CDATA[<p>总结一下python的迭代。</p><a id="more"></a><h3 id="sentence类第一版"><a href="#sentence类第一版" class="headerlink" title="sentence类第一版"></a>sentence类第一版</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> reprlib</span><br><span class="line"></span><br><span class="line">RE_WORD = re.compile(<span class="string">'\w+'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sentence</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        self.text = text</span><br><span class="line">        self.words = RE_WORD.findall(text)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, index)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.words[index]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.words)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Sentence(%s)'</span> % reprlib.repr(self.text)</span><br></pre></td></tr></table></figure><ol><li>re.findall函数返回一个字符串列表，里面的元素是正则表达式的全部非重叠匹配。</li><li>reprlib.repr函数用来表示一个缩略形式。</li></ol><p>测试：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = Sentence(<span class="string">'"The time has come," the Walrus said,'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s</span><br><span class="line">Sentence(<span class="string">'"The time ha... Walrus said,"'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> word <span class="keyword">in</span> s:</span><br><span class="line">        print(word)</span><br><span class="line">The</span><br><span class="line">time</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(s)</span><br><span class="line">[<span class="string">'The'</span>, <span class="string">'time'</span>, <span class="string">'has'</span>, <span class="string">'come'</span>, <span class="string">'the'</span>, <span class="string">'Walrus'</span>, <span class="string">'said'</span>]</span><br></pre></td></tr></table></figure><h4 id="序列可以迭代的原因：iter函数"><a href="#序列可以迭代的原因：iter函数" class="headerlink" title="序列可以迭代的原因：iter函数"></a>序列可以迭代的原因：iter函数</h4><p>“解释器需要迭代对象x时，会自动调用iter(x).”<br>内置的iter函数有以下作用：</p><ol><li>检查对象是否实现了<strong>iter</strong>方法，如果实现了就调用它，获取一个迭代器。</li><li>如果没有实现<strong>iter</strong>方法，但是实现了<strong>getitem</strong>方法，python会创建一个迭代器，尝试从索引0开始获取元素。</li><li>如果尝试失败，python会抛出typeError异常。</li></ol><h3 id="可迭代对象与迭代器的对比"><a href="#可迭代对象与迭代器的对比" class="headerlink" title="可迭代对象与迭代器的对比"></a>可迭代对象与迭代器的对比</h3><p>可迭代对象：<br>使用iter内置函数可以获取迭代器对象。如果对象实现了能返回迭代器的<strong>iter</strong>方法，那么对象就是可迭代的。<br>“python从可迭代对象中获取迭代器。”<br>看下面的例子：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">'ABC'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>it = iter(s)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            print(next(it))</span><br><span class="line">        <span class="keyword">except</span> StopIteration:</span><br><span class="line">            <span class="keyword">del</span> it</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">A</span><br><span class="line">B</span><br><span class="line">C</span><br></pre></td></tr></table></figure><p>标准的迭代器接口有两个方法：<br>__next__<br>返回下一个可用的元素，如果没有元素了，抛出stopiteration异常。<br>__iter__<br>返回self，以便在应该使用可迭代对象的地方使用迭代器。</p><p>迭代器：<br>实现了无参数的<strong>next</strong>方法，返回序列中的下一个元素；如果没有元素了，抛出StopIteration异常。python中的迭代器还实现了<strong>iter</strong>方法，因此迭代器也可以迭代。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;总结一下python的迭代。&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
     
   </entry>
   
