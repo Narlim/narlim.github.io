@@ -64,7 +64,7 @@
 <meta property="og:site_name" content="Nototaku">
 <meta property="og:description" content="记录一下最近几天在搞的一个更舒服地上网的方案，尽量讲得详细一点。参考的文章是：博客有几个点和这篇文章不太一样，都会详细写出。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-06-23T15:41:11.673Z">
+<meta property="og:updated_time" content="2021-06-23T15:55:13.367Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DNS分流">
 <meta name="twitter:description" content="记录一下最近几天在搞的一个更舒服地上网的方案，尽量讲得详细一点。参考的文章是：博客有几个点和这篇文章不太一样，都会详细写出。">
@@ -236,7 +236,7 @@
                 
               
 
-              <time title="创建时间：2021-06-23 20:55:08 / 修改时间：23:41:11" itemprop="dateCreated datePublished" datetime="2021-06-23T20:55:08+08:00">2021-06-23</time>
+              <time title="创建时间：2021-06-23 20:55:08 / 修改时间：23:55:13" itemprop="dateCreated datePublished" datetime="2021-06-23T20:55:08+08:00">2021-06-23</time>
             </span>
           
             
@@ -291,7 +291,7 @@
 <h3 id="shadowsocks-libev"><a href="#shadowsocks-libev" class="headerlink" title="shadowsocks-libev"></a>shadowsocks-libev</h3><p>服务器配置：</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"server"</span>:[<span class="string">"0.0.0.0"</span>],</span><br><span class="line">    <span class="attr">"mode"</span>:<span class="string">"tcp_and_udp"</span>,</span><br><span class="line">    <span class="attr">"server_port"</span>:<span class="number">18388</span>,</span><br><span class="line">    <span class="attr">"password"</span>:<span class="string">"&lt;PASSWORD&gt;"</span>,</span><br><span class="line">    <span class="attr">"timeout"</span>:<span class="number">60</span>,</span><br><span class="line">    <span class="attr">"method"</span>:<span class="string">"chacha20-ietf-poly1305"</span>,</span><br><span class="line">    <span class="attr">"nameserver"</span>: <span class="string">"208.67.222.222"</span>,</span><br><span class="line">    <span class="attr">"fast_open"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"no_delay"</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>这里我开启了<code>no_delay</code>这个参数，表示关闭tcp的Nagle算法，这个算法大概的意思就是tcp发包的时候，如果发送的数据量没有达到一定的值，会等一下后面的数据再发，这样无疑增加了网络的延迟;而关闭的意思就是如果有了哪怕一点数据就发送，不用等待。这个参数具体对于网速究竟有没有提升不是很清楚，反正我开了。</p>
+<p>这里我开启了<code>no_delay</code>这个参数，表示关闭tcp的Nagle算法，这个算法大概的意思就是tcp发包的时候，如果发送的数据量没有达到一定的值，会等一下后面的数据再发，这样无疑增加了网络的延迟;而关闭的意思就是如果有了哪怕一点数据就发送，不用等待。感兴趣的话可以去了解一下。这个参数具体对于网速究竟有没有提升不是很清楚，反正我开了。</p>
 <h4 id="服务器的内核参数优化"><a href="#服务器的内核参数优化" class="headerlink" title="服务器的内核参数优化"></a>服务器的内核参数优化</h4><h3 id="privoxy"><a href="#privoxy" class="headerlink" title="privoxy"></a>privoxy</h3><p>这个软件是一个比较老的http代理软件，老不代表差，主要就是用它来做分流。<br>上面那篇文章里面用的是GFW黑名单，意思就是维护一个全部被墙的域名列表，如果请求的域名在列表里面就走代理，如果不在就直连，这样有一个弊端就是如果有新的网站被墙，而列表没有及时更新的话，访问就还是困难。所以我这里就选择另一个方案，白名单;如果访问的域名不在列表里面，全部走代理。</p>
 <p>但是我好像没有找到适合<code>privoxy</code>的白名单这样的配置，国内域名的列表是有，就是这个：<a href="https://github.com/felixonmars/dnsmasq-china-list" target="_blank" rel="noopener">https://github.com/felixonmars/dnsmasq-china-list</a>，那就用这个列表来自己动手生成一个配置文件。</p>
 <p>因为后面也是要用到<code>dnsmasq</code>，也需要这个配置，所以先安装<code>dnsmasq</code>并配置。</p>
