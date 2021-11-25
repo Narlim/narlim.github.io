@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Nototaku" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="xbox的无线手柄连接linux的蓝牙的时候，会有一个小问题。">
+<meta name="keywords" content="linux,game">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xbox 无线手柄连接linux">
+<meta property="og:url" content="http://yoursite.com/2020/10/05/xbox-无线手柄连接linux/index.html">
+<meta property="og:site_name" content="Nototaku">
+<meta property="og:description" content="xbox的无线手柄连接linux的蓝牙的时候，会有一个小问题。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2020/10/05/xbox-%E6%97%A0%E7%BA%BF%E6%89%8B%E6%9F%84%E8%BF%9E%E6%8E%A5linux/uninstall.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/05/xbox-%E6%97%A0%E7%BA%BF%E6%89%8B%E6%9F%84%E8%BF%9E%E6%8E%A5linux/install.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/05/xbox-%E6%97%A0%E7%BA%BF%E6%89%8B%E6%9F%84%E8%BF%9E%E6%8E%A5linux/kernel.png">
+<meta property="og:updated_time" content="2021-06-12T14:02:58.147Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="xbox 无线手柄连接linux">
+<meta name="twitter:description" content="xbox的无线手柄连接linux的蓝牙的时候，会有一个小问题。">
+<meta name="twitter:image" content="http://yoursite.com/2020/10/05/xbox-%E6%97%A0%E7%BA%BF%E6%89%8B%E6%9F%84%E8%BF%9E%E6%8E%A5linux/uninstall.png">
+  <link rel="canonical" href="http://yoursite.com/2020/10/05/xbox-无线手柄连接linux/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>xbox 无线手柄连接linux | Nototaku</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Nototaku</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/05/xbox-无线手柄连接linux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Narlim">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/Laughing_man_logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nototaku">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">xbox 无线手柄连接linux
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-10-05 13:26:07" itemprop="dateCreated datePublished" datetime="2020-10-05T13:26:07+08:00">2020-10-05</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-12 22:02:58" itemprop="dateModified" datetime="2021-06-12T22:02:58+08:00">2021-06-12</time>
+              </span>
+            
+          
+
+          
+            <span id="/2020/10/05/xbox-无线手柄连接linux/" class="post-meta-item leancloud_visitors" data-flag-title="xbox 无线手柄连接linux" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/10/05/xbox-无线手柄连接linux/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/05/xbox-无线手柄连接linux/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>xbox的无线手柄连接linux的蓝牙的时候，会有一个小问题。</p>
+<a id="more"></a>
+
+<p>因为linux的蓝牙默认是启用的ertm模式，在这个模式下，xbox的手柄是连接不了的，所以有一个解决办法是关闭这个模式：</p>
+<h3 id="第一个方法"><a href="#第一个方法" class="headerlink" title="第一个方法"></a>第一个方法</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">echo</span> 1 &gt; /sys/module/bluetooth/parameters/disable_ertm</span><br></pre></td></tr></table></figure>
+
+<p>然后重启蓝牙：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart bluebooh</span><br></pre></td></tr></table></figure>
+
+<p>但是这个办法电脑重启以后就会失效，每次连接都要来一遍就有点麻烦。</p>
+<h3 id="第二个方法"><a href="#第二个方法" class="headerlink" title="第二个方法"></a>第二个方法</h3><p>还有一个一劳永逸的办法就是安装一个第三方的xbox手柄驱动:<br><a href="https://github.com/atar-axis/xpadneo" target="_blank" rel="noopener">github</a></p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">arch linux：</span><br><span class="line"></span><br><span class="line">sudo pacman -S dkms linux-headers bluez bluez-utils</span><br><span class="line"></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/atar-axis/xpadneo.git</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> xpadneo</span><br><span class="line">sudo ./install.sh</span><br></pre></td></tr></table></figure>
+
+<p>装完以后重启配对蓝牙就ok了。可以发现，这个项目还提供了一些手柄的高级操作，有一些甚至在windows下面都不支持。</p>
+<h4 id="10月18更新"><a href="#10月18更新" class="headerlink" title="10月18更新"></a>10月18更新</h4><p>今天打开steam想用手柄玩会游戏，突然发现手柄不能用了，，之前连上手柄会有轻微的一点震动，现在连上什么反应也没有了，进游戏按键什么的毫无反应。<br>猜测是系统更新的问题，我就查看了之前装的关于无线蓝牙的驱动和工具：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -Qs bule</span><br></pre></td></tr></table></figure>
+
+<p>发现最近的更新是在9月，那时候我都已经在用这个手柄玩游戏之前了，所以不是这个。</p>
+<p>然后我怀疑是手柄的驱动是不是更新了，于是到项目的github发现也没有，最后我尝试重新安装手柄驱动：</p>
+<p><img src="/2020/10/05/xbox-%E6%97%A0%E7%BA%BF%E6%89%8B%E6%9F%84%E8%BF%9E%E6%8E%A5linux/uninstall.png" alt="uninstall"></p>
+<p>原来这个模块没有加载啊，怪不得。但是为什么没有加载呢？</p>
+<p>我先没有管，直接重新安装了：</p>
+<p><img src="/2020/10/05/xbox-%E6%97%A0%E7%BA%BF%E6%89%8B%E6%9F%84%E8%BF%9E%E6%8E%A5linux/install.png" alt="install"></p>
+<p>竟然失败了，提示文件不存在！我可没有删除过任何这个目录下的文件啊，查看了文件目录确实没有文件，于是我看了一下install.sh的脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/bin/bash -e</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># shellcheck disable=SC1090</span></span><br><span class="line"><span class="built_in">source</span> <span class="string">"<span class="variable">$(dirname "$0")</span>/lib/installer.sh"</span></span><br><span class="line"></span><br><span class="line">DESTDIR=<span class="string">"/usr/src/hid-xpadneo-<span class="variable">$&#123;VERSION&#125;</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [[ -z <span class="string">"<span class="variable">$INSTALLED</span>"</span> ]]; <span class="keyword">then</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"* copying module to '<span class="variable">$&#123;DESTDIR&#125;</span>'"</span></span><br><span class="line">    cp --recursive <span class="string">"hid-xpadneo"</span> <span class="string">"<span class="variable">$&#123;DESTDIR&#125;</span>"</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"* replacing version string if necessary"</span></span><br><span class="line">        (</span><br><span class="line">                <span class="built_in">cd</span> <span class="string">"<span class="variable">$&#123;DESTDIR&#125;</span>"</span></span><br><span class="line">                sed -i <span class="string">'s/"@DO_NOT_CHANGE@"/"'</span><span class="string">"<span class="variable">$&#123;VERSION&#125;</span>"</span><span class="string">'"/g'</span> dkms.conf src/hid-xpadneo.c</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"* adding module to DKMS"</span></span><br><span class="line">    dkms add <span class="string">"hid-xpadneo/<span class="variable">$&#123;VERSION&#125;</span>"</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"* installing module (using DKMS)"</span></span><br><span class="line">    dkms install <span class="string">"hid-xpadneo/<span class="variable">$&#123;VERSION&#125;</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"already installed!"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>脚本很短，先是source了一个installer, 然后看一下<code>INSTALLED</code>这个变量为不为空，为空的话就执行安装的步骤。</p>
+<p>再看一下那个installer文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$&#123;EUID&#125;</span> -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> &gt;&amp;2 <span class="string">"ERROR: You most probably need superuser privileges to use this script, please run me via sudo!"</span></span><br><span class="line">        <span class="built_in">exit</span> 3</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># shellcheck disable=SC2034</span></span><br><span class="line">GIT_ROOT=$(git rev-parse --show-toplevel 2&gt;/dev/null || <span class="literal">true</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">__version</span></span>() &#123;</span><br><span class="line">        git describe --tags --dirty 2&gt;/dev/null || sed -re<span class="string">'s/v?(.*)/v\1/'</span> <span class="string">"<span class="variable">$(dirname "$&#123;BASH_SOURCE[0]&#125;")</span>/../VERSION"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">__version_lte</span></span>() &#123;</span><br><span class="line">    [  <span class="string">"<span class="variable">$1</span>"</span> = <span class="string">"<span class="variable">$(echo -e "$1\n$&#123;2/-/.9999-&#125;" | sort -V | head -n1)</span>"</span> ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># shellcheck disable=SC2034</span></span><br><span class="line">VERSION=$(__version)</span><br><span class="line"></span><br><span class="line">DKMS_BIN=$(<span class="built_in">type</span> -p dkms)</span><br><span class="line"></span><br><span class="line"><span class="comment"># shellcheck disable=SC2086</span></span><br><span class="line">: <span class="variable">$&#123;DKMS_BIN:?Please install dkms to continue&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">get_dkms_versions_installed</span></span>() &#123;</span><br><span class="line">        <span class="variable">$&#123;DKMS_BIN&#125;</span> status | tr -s <span class="string">':, '</span> <span class="string">' '</span> | awk -- <span class="string">'$1 == "hid-xpadneo" &#123; print $2 &#125;'</span> | sort -nu</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">get_upstream_version_latest</span></span>() &#123;</span><br><span class="line">        curl -sI <span class="string">"https://github.com/atar-axis/xpadneo/releases/latest"</span> | \</span><br><span class="line">        awk -- <span class="string">'BEGIN&#123;IGNORECASE=1&#125; /^location:/ &#123; n = split($2, v, /\//); print v[n]; exit &#125;'</span> | \</span><br><span class="line">        tr -d <span class="string">'[:space:]'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># shellcheck disable=SC2034</span></span><br><span class="line">INSTALLED=(</span><br><span class="line">        $(get_dkms_versions_installed)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>发现是<code>get_dkms_version_installed</code>这个函数获取安装版本号：根据<code>dkms status</code>的结果提取出版本号，执行了也发现也没啥问题啊。</p>
+<p>查看一下dkms究竟是什么：<br><a href="https://wiki.archlinux.org/index.php/Dynamic_Kernel_Module_Support" target="_blank" rel="noopener">arch wiki about DKMS</a><br>动态内核模块支持(DKMS) 是一个程序框架，可以编译内核代码树之外的模块。0.0 咱不懂啊。但是我看了它几个命令好像也不难。。</p>
+<p>问题还是没找到啊，于是我又去错误提示的那个目录看一下究竟少了什么文件：<br><img src="/2020/10/05/xbox-%E6%97%A0%E7%BA%BF%E6%89%8B%E6%9F%84%E8%BF%9E%E6%8E%A5linux/kernel.png" alt="ls"><br>一看版本好像和我的内核版本不太一样啊！（后面那个5.8.14是我新加的）<br>看来是更新内核的原因啊，于是我重新生成了一份文件：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dkms install -m hid-xpadneo -v v0.8-29-gd55e6d4</span><br></pre></td></tr></table></figure>
+
+<p>然后重新加载内核模块：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo modprobe hid_xpadneo</span><br><span class="line">lsmod | grep hid_xpadneo</span><br></pre></td></tr></table></figure>
+
+<p>重新连接xbox手柄，成功！</p>
+<p>虽然写得很短，但是这个问题排查真的花了我一个多小时啊，搞完以后游戏也不想玩了。 关键是内核更新了，这个模块竟然没有更新。。arch wiki里面明明写了：</p>
+<blockquote>
+<p>升级内核时，通过 DKMS 管理的内核模块可以被自动重新构建以适应新的内核版本。</p>
+</blockquote>
+<p>问了别人说是内核如果有api break change的时候DKMS是不会自动帮你更新模块的。内核什么的已经超出我的能力范围了 = =。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/linux/" rel="tag"># linux</a>
+            
+              <a href="/tags/game/" rel="tag"># game</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2020/06/01/函数装饰器和闭包/" rel="next" title="函数装饰器和闭包">
+                  <i class="fa fa-chevron-left"></i> 函数装饰器和闭包
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2020/10/06/linux游戏指南/" rel="prev" title="linux游戏不完全指南">
+                  linux游戏不完全指南 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一个方法"><span class="nav-number">1.</span> <span class="nav-text">第一个方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二个方法"><span class="nav-number">2.</span> <span class="nav-text">第二个方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">2.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10月18更新"><span class="nav-number">2.2.</span> <span class="nav-text">10月18更新</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/Laughing_man_logo.png"
+      alt="Narlim">
+  <p class="site-author-name" itemprop="name">Narlim</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://ghost.qinan.co/" title="https://ghost.qinan.co/" rel="noopener" target="_blank">奇楠木语</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://liolok.github.io" title="https://liolok.github.io" rel="noopener" target="_blank">LIOLOG</a>
+        </li>
+      
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Narlim</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+  
+  <script>
+  function leancloudSelector(url) {
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = visitors.getAttribute('id').trim();
+      var title = visitors.getAttribute('data-flag-title').trim();
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+            
+              .catch(error => {
+                console.log('Failed to save visitor count', error);
+              })
+          } else {
+              Counter('post', '/classes/Counter', { title: title, url: url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.log('Failed to create', error);
+                });
+            
+          }
+        })
+        .catch(error => {
+          console.log('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return element.getAttribute('id').trim();
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.url;
+            var time = item.time;
+            leancloudSelector(url).innerText = time;
+          }
+          for (var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.log('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=UnGjdjzgCgtCbeup6X9wI9EP-MdYXbMMI')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'UnGjdjzgCgtCbeup6X9wI9EP-MdYXbMMI',
+            'X-LC-Key': 'Crb6d8ghnDlTxnwEHdXK8a8L',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        const localhost = /http:\/\/(localhost|127.0.0.1|0.0.0.0)/;
+        if (localhost.test(document.URL)) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://nototaku.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "http://yoursite.com/2020/10/05/xbox-无线手柄连接linux/";
+    this.page.identifier = "2020/10/05/xbox-无线手柄连接linux/";
+    this.page.title = 'xbox 无线手柄连接linux';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://nototaku.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>
