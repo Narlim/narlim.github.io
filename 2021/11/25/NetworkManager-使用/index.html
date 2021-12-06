@@ -56,18 +56,18 @@
   };
 </script>
 
-  <meta name="description" content="NetworkManager 是红帽官方推荐的一个网络配置软件，用来代替老的网络配置脚本。这里介绍一些基本的网络配置命令，来完成静态ip配置以及网络连接的管理。 前言centos7 系统安装完成之后，默认启用 NetworkManager ，但是同时也支持老的脚本管理方式，脚本可以通过：systemctl cat network.service 来查看： NetworkManager 会读取 /e">
+  <meta name="description" content="NetworkManager 是红帽官方推荐的一个网络配置软件，用来代替老的网络配置脚本。这里介绍一些基本的网络配置命令，来完成静态ip配置以及网络连接的管理。">
 <meta name="keywords" content="centos,network">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NetworkManager 使用">
 <meta property="og:url" content="http://yoursite.com/2021/11/25/NetworkManager-使用/index.html">
 <meta property="og:site_name" content="Nototaku">
-<meta property="og:description" content="NetworkManager 是红帽官方推荐的一个网络配置软件，用来代替老的网络配置脚本。这里介绍一些基本的网络配置命令，来完成静态ip配置以及网络连接的管理。 前言centos7 系统安装完成之后，默认启用 NetworkManager ，但是同时也支持老的脚本管理方式，脚本可以通过：systemctl cat network.service 来查看： NetworkManager 会读取 /e">
+<meta property="og:description" content="NetworkManager 是红帽官方推荐的一个网络配置软件，用来代替老的网络配置脚本。这里介绍一些基本的网络配置命令，来完成静态ip配置以及网络连接的管理。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-11-25T15:04:41.666Z">
+<meta property="og:updated_time" content="2021-12-06T01:47:13.014Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NetworkManager 使用">
-<meta name="twitter:description" content="NetworkManager 是红帽官方推荐的一个网络配置软件，用来代替老的网络配置脚本。这里介绍一些基本的网络配置命令，来完成静态ip配置以及网络连接的管理。 前言centos7 系统安装完成之后，默认启用 NetworkManager ，但是同时也支持老的脚本管理方式，脚本可以通过：systemctl cat network.service 来查看： NetworkManager 会读取 /e">
+<meta name="twitter:description" content="NetworkManager 是红帽官方推荐的一个网络配置软件，用来代替老的网络配置脚本。这里介绍一些基本的网络配置命令，来完成静态ip配置以及网络连接的管理。">
   <link rel="canonical" href="http://yoursite.com/2021/11/25/NetworkManager-使用/">
 
 
@@ -236,11 +236,19 @@
                 
               
 
-              <time title="创建时间：2021-11-25 22:13:55 / 修改时间：23:04:41" itemprop="dateCreated datePublished" datetime="2021-11-25T22:13:55+08:00">2021-11-25</time>
+              <time title="创建时间：2021-11-25 22:13:55" itemprop="dateCreated datePublished" datetime="2021-11-25T22:13:55+08:00">2021-11-25</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-06 09:47:13" itemprop="dateModified" datetime="2021-12-06T09:47:13+08:00">2021-12-06</time>
+              </span>
             
           
 
@@ -278,6 +286,7 @@
 
       
         <p>NetworkManager 是红帽官方推荐的一个网络配置软件，用来代替老的网络配置脚本。这里介绍一些基本的网络配置命令，来完成静态ip配置以及网络连接的管理。</p>
+<a id="more"></a>
 <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>centos7 系统安装完成之后，默认启用 NetworkManager ，但是同时也支持老的脚本管理方式，脚本可以通过：<code>systemctl cat network.service</code> 来查看：</p>
 <p>NetworkManager 会读取 /etc/sysconfig/network-scripts/ 目录下面的配置文件，这是为了兼容，也可以直接用它自带的 nmcli 命令行配置。</p>
 <p>还有两个概念需要明确，connection 和 device；device 很好理解，就是设备，在这里就是网卡，实体网卡或者虚拟玩卡都可以；connection 我们可以将为一个设备配置多个连接，就像一个无线网卡能连接到不同的 WIFI 信号，这里的 WIFI 信号就是 connection.</p>
@@ -325,6 +334,10 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2021/12/06/了解-Linux-Network-namespace/" rel="prev" title="了解 Linux Network namespace">
+                  了解 Linux Network namespace <i class="fa fa-chevron-right"></i>
+                </a>
               
             </div>
           </div>
@@ -400,7 +413,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">55</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
